@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import StartScreen from "./components/StartScreen";
 import StoryViewer from "./components/StoryViewer";
 import ThankYou from "./components/ThankYou";
@@ -6,8 +6,19 @@ import "./App.css";
 
 export default function App() {
   const [screen, setScreen] = useState("start"); // start | story | thankyou
+  const audioRef = useRef(null);
 
   const handleStart = useCallback(() => {
+    // Unlock audio on user gesture — required by mobile browsers
+    const audio = audioRef.current;
+    if (audio) {
+      audio.muted = true;
+      audio.play().then(() => {
+        audio.pause();
+        audio.muted = false;
+        audio.currentTime = 0;
+      }).catch(() => {});
+    }
     setScreen("story");
   }, []);
 
@@ -21,8 +32,11 @@ export default function App() {
 
   return (
     <div className="app">
+      {/* Shared audio element — lives here so it can be unlocked on Start tap */}
+      <audio ref={audioRef} preload="auto" />
+
       {screen === "start" && <StartScreen onStart={handleStart} />}
-      {screen === "story" && <StoryViewer onComplete={handleComplete} onHome={handleHome} />}
+      {screen === "story" && <StoryViewer onComplete={handleComplete} onHome={handleHome} audioRef={audioRef} />}
       {screen === "thankyou" && <ThankYou />}
     </div>
   );

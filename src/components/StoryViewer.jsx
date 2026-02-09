@@ -24,7 +24,7 @@ const SLIDES = [
 const TOTAL_SLIDES = SLIDES.length;
 const SWIPE_THRESHOLD = 50;
 
-export default function StoryViewer({ onComplete, onHome }) {
+export default function StoryViewer({ onComplete, onHome, audioRef }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState("forward");
   const [slideKey, setSlideKey] = useState(0);
@@ -34,7 +34,6 @@ export default function StoryViewer({ onComplete, onHome }) {
   // Refs so navigation helpers always read the latest slide
   const currentSlideRef = useRef(0);
   const timerRef = useRef(null);
-  const audioRef = useRef(null);
 
   // Pointer tracking for swipe
   const pointerStartRef = useRef({ x: 0, y: 0, time: 0 });
@@ -216,9 +215,6 @@ export default function StoryViewer({ onComplete, onHome }) {
       onTouchStart={handlePointerDown}
       onTouchEnd={handlePointerUp}
     >
-      {/* Hidden audio element for per-slide songs */}
-      <audio ref={audioRef} preload="auto" />
-
       <ProgressBar
         total={TOTAL_SLIDES}
         current={currentSlide}
