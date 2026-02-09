@@ -1,7 +1,7 @@
 import { useRef, useCallback } from "react";
 import "./ProgressBar.css";
 
-export default function ProgressBar({ total, current, duration, animKey, onSegmentClick }) {
+export default function ProgressBar({ total, current, duration, animKey, paused, onSegmentClick }) {
   const barRef = useRef(null);
 
   // Figure out which segment was tapped based on X position
@@ -53,7 +53,10 @@ export default function ProgressBar({ total, current, duration, animKey, onSegme
               <div
                 key={animKey}
                 className="progress-fill"
-                style={{ animationDuration: `${duration}ms` }}
+                style={{
+                  animationDuration: `${duration}ms`,
+                  animationPlayState: paused ? "paused" : "running",
+                }}
               />
             )}
             {i < current && <div className="progress-fill complete-fill" />}

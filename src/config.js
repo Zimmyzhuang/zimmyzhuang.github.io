@@ -41,7 +41,7 @@ const timeSpent = {
 
 // ── SLIDE 3 · TOP LOCATION ─────────────────
 const topLocation = {
-  location:  "Your Couch",
+  location:  "School... Doing Homework",
   subtitle:  "You spent the most time at:",
   footnote:  "No complaints here.",
   photo:     "/assets/location.jpg",

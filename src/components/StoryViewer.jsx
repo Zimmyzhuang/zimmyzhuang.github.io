@@ -29,6 +29,7 @@ export default function StoryViewer({ onComplete, onHome }) {
   const [direction, setDirection] = useState("forward");
   const [slideKey, setSlideKey] = useState(0);
   const [muted, setMuted] = useState(false);
+  const [paused, setPaused] = useState(false);
 
   // Refs so navigation helpers always read the latest slide
   const currentSlideRef = useRef(0);
@@ -85,6 +86,17 @@ export default function StoryViewer({ onComplete, onHome }) {
     setMuted((m) => !m);
   }, []);
 
+  // Pause / resume audio
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !audio.src) return;
+    if (paused) {
+      audio.pause();
+    } else {
+      audio.play().catch(() => {});
+    }
+  }, [paused]);
+
   // ---- Navigation helpers ----
   const clearTimer = useCallback(() => {
     if (timerRef.current) {
@@ -120,13 +132,14 @@ export default function StoryViewer({ onComplete, onHome }) {
   // Resets when slide changes OR when the same slide is replayed (slideKey changes)
   useEffect(() => {
     clearTimer();
+    if (paused) return;
     const duration = SLIDES[currentSlideRef.current].config.duration || 0;
     if (duration <= 0) return; // Don't auto-advance if no duration (e.g. puzzle)
     timerRef.current = setTimeout(() => {
       goForward();
     }, duration);
     return clearTimer;
-  }, [currentSlide, slideKey, clearTimer, goForward]);
+  }, [currentSlide, slideKey, paused, clearTimer, goForward]);
 
   // ---- Pointer helpers ----
   const getPointerPos = (e) => {
@@ -182,10 +195,13 @@ export default function StoryViewer({ onComplete, onHome }) {
     if (isBarOrButton(e)) return;
 
     const x = e.clientX || 0;
-    if (x < window.innerWidth * 0.5) {
+    const w = window.innerWidth;
+    if (x < w * 0.33) {
       goBack();
-    } else {
+    } else if (x > w * 0.66) {
       goForward();
+    } else {
+      setPaused((p) => !p);
     }
   }, [goForward, goBack]);
 
@@ -207,6 +223,7 @@ export default function StoryViewer({ onComplete, onHome }) {
         total={TOTAL_SLIDES}
         current={currentSlide}
         duration={slideDuration}
+        paused={paused}
         animKey={slideKey}
         onSegmentClick={goToSlide}
       />
