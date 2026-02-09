@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import { LanguageProvider } from "./LanguageContext";
 import StartScreen from "./components/StartScreen";
 import StoryViewer from "./components/StoryViewer";
 import ThankYou from "./components/ThankYou";
@@ -27,17 +28,23 @@ export default function App() {
   }, []);
 
   const handleHome = useCallback(() => {
+    // Stop all audio (slide songs + whisper)
+    const audio = audioRef.current;
+    if (audio) { audio.pause(); audio.currentTime = 0; }
+    if (window.__whisperAudio) { window.__whisperAudio.pause(); window.__whisperAudio.currentTime = 0; }
     setScreen("start");
   }, []);
 
   return (
-    <div className="app">
-      {/* Shared audio element — lives here so it can be unlocked on Start tap */}
-      <audio ref={audioRef} preload="auto" />
+    <LanguageProvider>
+      <div className="app">
+        {/* Shared audio element — lives here so it can be unlocked on Start tap */}
+        <audio ref={audioRef} preload="auto" />
 
-      {screen === "start" && <StartScreen onStart={handleStart} />}
-      {screen === "story" && <StoryViewer onComplete={handleComplete} onHome={handleHome} audioRef={audioRef} />}
-      {screen === "thankyou" && <ThankYou />}
-    </div>
+        {screen === "start" && <StartScreen onStart={handleStart} />}
+        {screen === "story" && <StoryViewer onComplete={handleComplete} onHome={handleHome} audioRef={audioRef} />}
+        {screen === "thankyou" && <ThankYou onHome={handleHome} />}
+      </div>
+    </LanguageProvider>
   );
 }

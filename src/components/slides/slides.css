@@ -146,8 +146,8 @@
 
 .vinyl-disk {
   position: relative;
-  width: 260px;
-  height: 260px;
+  width: 320px;
+  height: 320px;
   border-radius: 50%;
   background: radial-gradient(
     circle,
@@ -177,9 +177,9 @@
     repeating-radial-gradient(
       circle at center,
       transparent 0px,
-      transparent 3px,
-      rgba(255, 255, 255, 0.03) 3px,
-      rgba(255, 255, 255, 0.03) 4px
+      transparent 2.5px,
+      rgba(255, 255, 255, 0.06) 2.5px,
+      rgba(255, 255, 255, 0.06) 3.5px
     );
   pointer-events: none;
 }
@@ -205,14 +205,13 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 104px;
-  height: 104px;
+  width: 130px;
+  height: 130px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   overflow: hidden;
   background: linear-gradient(135deg, #8B1E3F, #B11226);
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
-  /* counter-rotation is now driven by JS */
 }
 
 .vinyl-photo {
@@ -232,17 +231,17 @@
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* Tiny spindle hole in the very center */
+/* Spindle hole in the center of the photo */
 .vinyl-spindle {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 8px;
-  height: 8px;
+  width: 14px;
+  height: 14px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: #0a0a0a;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15), 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
 /* vinylSpin / vinylCounterSpin — now driven by JS for drag interaction */

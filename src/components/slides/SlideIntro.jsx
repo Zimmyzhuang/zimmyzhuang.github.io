@@ -1,10 +1,13 @@
 import CONFIG from "../../config";
+import { useLanguage, t } from "../../LanguageContext";
 import PhotoFrame from "../PhotoFrame";
 import "./slides.css";
 
-const { intro } = CONFIG.slides;
-
 export default function SlideIntro() {
+  const { lang } = useLanguage();
+  const intro = t(CONFIG.slides.intro, lang);
+  const displayName = lang === "en" ? CONFIG.nameEn : CONFIG.name;
+
   return (
     <div className="slide slide-intro">
       <div className="slide-bg-gradient gradient-1" />
@@ -14,7 +17,7 @@ export default function SlideIntro() {
           {intro.greeting},
         </p>
         <h1 className="slide-hero-text anim-fade-up" style={{ animationDelay: "0.8s" }}>
-          {CONFIG.name}.
+          {displayName}.
         </h1>
         <p className="slide-body anim-fade-up" style={{ animationDelay: "1.1s" }}>
           {intro.subtitle}

@@ -1,10 +1,12 @@
 import CONFIG from "../../config";
+import { useLanguage, t } from "../../LanguageContext";
 import PhotoFrame from "../PhotoFrame";
 import "./slides.css";
 
-const { topArtist } = CONFIG.slides;
-
 export default function SlideArtist() {
+  const { lang } = useLanguage();
+  const topArtist = t(CONFIG.slides.topArtist, lang);
+
   return (
     <div className="slide slide-artist">
       <div className="slide-bg-gradient gradient-4" />

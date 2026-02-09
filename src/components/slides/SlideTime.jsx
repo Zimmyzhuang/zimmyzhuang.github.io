@@ -1,17 +1,19 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import CONFIG from "../../config";
+import { useLanguage, t } from "../../LanguageContext";
 import AnimatedNumber from "../AnimatedNumber";
 import "./slides.css";
 
-const { timeSpent } = CONFIG.slides;
-const AUTO_SPIN_SPEED = 0.4; // degrees per frame (~24 deg/s → one revolution ~15s)
+const AUTO_SPIN_SPEED = 1.2; // degrees per frame (~72 deg/s → one revolution ~5s)
 
 export default function SlideTime() {
+  const { lang } = useLanguage();
+  const timeSpent = t(CONFIG.slides.timeSpent, lang);
+  const s = CONFIG.strings[lang];
   const [photoFailed, setPhotoFailed] = useState(false);
   const showPhoto = timeSpent.photo && !photoFailed;
 
   const diskRef = useRef(null);
-  const labelRef = useRef(null);
   const angleRef = useRef(0);          // current cumulative rotation (degrees)
   const dragging = useRef(false);
   const lastPointerAngle = useRef(0);  // angle of pointer relative to center
@@ -27,10 +29,9 @@ export default function SlideTime() {
     return Math.atan2(clientY - cy, clientX - cx) * (180 / Math.PI);
   }, []);
 
-  // Apply rotation to DOM
+  // Apply rotation to DOM (photo spins with the disk)
   const applyRotation = useCallback((deg) => {
     if (diskRef.current) diskRef.current.style.transform = `rotate(${deg}deg)`;
-    if (labelRef.current) labelRef.current.style.transform = `translate(-50%, -50%) rotate(${-deg}deg)`;
   }, []);
 
   // Auto-spin loop
@@ -121,7 +122,7 @@ export default function SlideTime() {
         >
           <div className="vinyl-disk" ref={diskRef}>
             <div className="vinyl-grooves" />
-            <div className="vinyl-label" ref={labelRef}>
+            <div className="vinyl-label">
               {showPhoto ? (
                 <img
                   src={timeSpent.photo}
@@ -145,7 +146,7 @@ export default function SlideTime() {
         </div>
 
         <p className="slide-label anim-fade-up" style={{ animationDelay: "0.5s" }}>
-          We spent approximately
+          {s.timeSpentIntro}
         </p>
         <div className="big-stat anim-scale-up" style={{ animationDelay: "0.8s" }}>
           <AnimatedNumber value={timeSpent.number} />

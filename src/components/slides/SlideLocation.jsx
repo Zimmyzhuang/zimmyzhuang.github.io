@@ -1,10 +1,12 @@
 import CONFIG from "../../config";
+import { useLanguage, t } from "../../LanguageContext";
 import PhotoFrame from "../PhotoFrame";
 import "./slides.css";
 
-const { topLocation } = CONFIG.slides;
-
 export default function SlideLocation() {
+  const { lang } = useLanguage();
+  const topLocation = t(CONFIG.slides.topLocation, lang);
+
   return (
     <div className="slide slide-location">
       <div className="slide-bg-gradient gradient-3" />

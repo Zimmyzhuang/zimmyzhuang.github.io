@@ -1,12 +1,14 @@
 import { useState } from "react";
 import confetti from "canvas-confetti";
 import CONFIG from "../../config";
+import { useLanguage, t } from "../../LanguageContext";
 import PhotoFrame from "../PhotoFrame";
 import "./slides.css";
 
-const { finalAsk } = CONFIG.slides;
-
 export default function SlideFinalAsk({ onComplete }) {
+  const { lang } = useLanguage();
+  const finalAsk = t(CONFIG.slides.finalAsk, lang);
+  const s = CONFIG.strings[lang];
   const [answered, setAnswered] = useState(false);
 
   const handleAnswer = () => {
@@ -72,7 +74,7 @@ export default function SlideFinalAsk({ onComplete }) {
         ) : (
           <div className="answered-state anim-scale-up">
             <span className="answered-emoji">💖</span>
-            <h1 className="answered-text">I knew it.</h1>
+            <h1 className="answered-text">{s.answeredText}</h1>
           </div>
         )}
       </div>

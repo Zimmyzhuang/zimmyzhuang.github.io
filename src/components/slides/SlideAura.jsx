@@ -1,10 +1,12 @@
 import CONFIG from "../../config";
+import { useLanguage, t } from "../../LanguageContext";
 import PhotoFrame from "../PhotoFrame";
 import "./slides.css";
 
-const { aura } = CONFIG.slides;
-
 export default function SlideAura() {
+  const { lang } = useLanguage();
+  const aura = t(CONFIG.slides.aura, lang);
+
   return (
     <div className="slide slide-aura">
       <div className="aura-bg">

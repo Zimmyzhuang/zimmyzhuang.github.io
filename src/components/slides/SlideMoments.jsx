@@ -1,10 +1,12 @@
 import CONFIG from "../../config";
+import { useLanguage, t } from "../../LanguageContext";
 import PhotoFrame from "../PhotoFrame";
 import "./slides.css";
 
-const { topMoments } = CONFIG.slides;
-
 export default function SlideMoments() {
+  const { lang } = useLanguage();
+  const topMoments = t(CONFIG.slides.topMoments, lang);
+
   return (
     <div className="slide slide-moments">
       <div className="slide-bg-gradient gradient-5" />

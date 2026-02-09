@@ -1,11 +1,10 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
 import CONFIG from "../../config";
+import { useLanguage, t } from "../../LanguageContext";
 import PhotoFrame from "../PhotoFrame";
 import "./SlidePuzzle.css";
 import "./slides.css";
-
-const { puzzle, finalAsk } = CONFIG.slides;
 
 /* ============================================
    Rose confetti burst (on puzzle solve)
@@ -134,6 +133,11 @@ const checkSolved = (b) => b.every((v, i) => v === i);
      playing → celebrating → asking → answered
    ============================================ */
 export default function SlidePuzzle({ onComplete }) {
+  const { lang } = useLanguage();
+  const puzzle = t(CONFIG.slides.puzzle, lang);
+  const finalAsk = t(CONFIG.slides.finalAsk, lang);
+  const s = CONFIG.strings[lang];
+
   const [phase, setPhase] = useState("playing");
   const phaseRef = useRef("playing");
 
@@ -293,6 +297,8 @@ export default function SlidePuzzle({ onComplete }) {
     audio.preload = "auto";
     audio.volume = CONFIG.volume;
     whisperRef.current = audio;
+    // Store globally so it can be stopped when navigating home
+    window.__whisperAudio = audio;
     // No cleanup — whisper keeps playing through the ThankYou screen
   }, []);
 
@@ -349,7 +355,7 @@ export default function SlidePuzzle({ onComplete }) {
               className="slide-label anim-fade-up"
               style={{ animationDelay: "0.1s" }}
             >
-              One last thing...
+              {s.puzzleLastThing}
             </p>
             <h2
               className="puzzle-title anim-fade-up"
@@ -454,7 +460,7 @@ export default function SlidePuzzle({ onComplete }) {
         {phase === "answered" && (
           <div className="answered-state anim-scale-up">
             <span className="answered-emoji">💖</span>
-            <h1 className="answered-text">I knew it.</h1>
+            <h1 className="answered-text">{s.answeredText}</h1>
           </div>
         )}
       </div>

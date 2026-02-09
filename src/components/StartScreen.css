@@ -139,3 +139,65 @@
   color: var(--gray);
   opacity: 0.7;
 }
+
+/* ── Language toggle ──────────────────── */
+.lang-toggle {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lang-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--gray);
+  opacity: 0.45;
+  transition: opacity 0.3s, color 0.3s;
+  user-select: none;
+  font-family: var(--font-main);
+}
+
+.lang-label.active {
+  opacity: 1;
+  color: var(--cream);
+}
+
+.lang-toggle-track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: background 0.3s;
+}
+
+.lang-toggle-track:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.lang-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--cream);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lang-toggle-track--zh .lang-toggle-thumb {
+  transform: translateX(18px);
+}
