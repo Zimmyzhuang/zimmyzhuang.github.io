@@ -1,0 +1,47 @@
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  gap: 4px;
+  /* Big padding = big tap zone: 14px top + 5px bar + 30px bottom = ~49px total */
+  padding: 14px 10px 30px;
+  cursor: pointer;
+}
+
+.progress-segment {
+  flex: 1;
+  height: 5px;
+  background: rgba(232, 160, 184, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  pointer-events: none; /* Let the parent .progress-bar handle all taps */
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: rgba(255, 244, 236, 0.9);
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.progress-segment.active .progress-fill {
+  width: 0%;
+  animation: progressGrow linear forwards;
+}
+
+.complete-fill {
+  width: 100% !important;
+  animation: none !important;
+}
+
+@keyframes progressGrow {
+  from { width: 0%; }
+  to { width: 100%; }
+}

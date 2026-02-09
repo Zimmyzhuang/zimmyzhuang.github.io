@@ -1,0 +1,443 @@
+/* ============================================
+   SLIDE BASE & SHARED STYLES
+   ============================================ */
+
+.slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 28px 32px;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+}
+
+/* Variant: align content to top (for slides with lots of items) */
+.slide-inner--top {
+  justify-content: flex-start;
+  padding-top: 56px;
+}
+
+/* Background Gradients — Valentine palette */
+.slide-bg-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.85;
+}
+
+/* Intro — deep wine to dark */
+.gradient-1 {
+  background: linear-gradient(160deg, #0a0a0a 0%, #3a0e1e 30%, #8B1E3F 60%, #5c1230 100%);
+}
+
+/* Time — wine to blush */
+.gradient-2 {
+  background: linear-gradient(160deg, #0a0a0a 0%, #5c1230 40%, #8B1E3F 70%, #E8A0B8 100%);
+}
+
+/* Location — rose to wine */
+.gradient-3 {
+  background: linear-gradient(160deg, #0a0a0a 0%, #6b1529 40%, #B11226 70%, #8B1E3F 100%);
+}
+
+/* Artist — warm wine to gold */
+.gradient-4 {
+  background: linear-gradient(160deg, #0a0a0a 0%, #8B1E3F 45%, #B11226 70%, #E6C46A 100%);
+}
+
+/* Moments — wine to deep rose */
+.gradient-5 {
+  background: linear-gradient(160deg, #0a0a0a 0%, #5c1230 35%, #B11226 65%, #E8A0B8 100%);
+}
+
+/* Final — dramatic shifting valentine gradient */
+.gradient-final {
+  background: linear-gradient(160deg, #0a0a0a 0%, #B11226 25%, #8B1E3F 50%, #E8A0B8 75%, #E6C46A 100%);
+  animation: gradientShift 4s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0.95; }
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+.slide-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gray);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.slide-hero-text {
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #E8A0B8, #FFF4EC);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.slide-body {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: rgba(255, 244, 236, 0.85);
+  max-width: 300px;
+  line-height: 1.4;
+}
+
+.slide-cta-text {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--blush);
+  margin-top: 12px;
+}
+
+.slide-stat-label {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: rgba(255, 244, 236, 0.9);
+}
+
+.slide-footnote {
+  font-size: 0.85rem;
+  color: var(--gray);
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+/* ============================================
+   SLIDE: TIME SPENT
+   ============================================ */
+
+.big-stat {
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #E8A0B8, #FFF4EC, #E6C46A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  padding: 12px 0;
+}
+
+/* ============================================
+   SLIDE: LOCATION
+   ============================================ */
+
+.location-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: rgba(232, 160, 184, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 32px 40px;
+  border: 1px solid rgba(232, 160, 184, 0.15);
+  margin: 16px 0;
+}
+
+.location-pin {
+  animation: pinBounce 2s ease-in-out infinite;
+}
+
+@keyframes pinBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.location-name {
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+}
+
+/* ============================================
+   SLIDE: ARTIST
+   ============================================ */
+
+.artist-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.artist-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #B11226, #E8A0B8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  box-shadow: 0 0 40px rgba(177, 18, 38, 0.4);
+  animation: avatarGlow 3s ease-in-out infinite;
+}
+
+@keyframes avatarGlow {
+  0%, 100% { box-shadow: 0 0 40px rgba(177, 18, 38, 0.3); }
+  50% { box-shadow: 0 0 60px rgba(177, 18, 38, 0.6); }
+}
+
+.artist-name {
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+}
+
+.artist-streams {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--blush);
+}
+
+/* ============================================
+   SLIDE: AURA
+   ============================================ */
+
+.aura-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.aura-blob {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  animation: blobFloat 6s ease-in-out infinite;
+}
+
+@keyframes blobFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -30px) scale(1.2); }
+  66% { transform: translate(-20px, 20px) scale(0.8); }
+}
+
+.aura-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #E8A0B8, #FFF4EC, #E6C46A, #B11226);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: auraGradient 4s ease-in-out infinite;
+  padding: 8px 0;
+}
+
+@keyframes auraGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.aura-description {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(255, 244, 236, 0.7);
+  max-width: 280px;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+/* ============================================
+   SLIDE: TOP MOMENTS
+   ============================================ */
+
+.moments-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 340px;
+  margin-top: 20px;
+}
+
+.moment-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  text-align: left;
+  background: rgba(232, 160, 184, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 14px;
+  padding: 14px 16px;
+  border: 1px solid rgba(232, 160, 184, 0.12);
+}
+
+.moment-number {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--blush);
+  flex-shrink: 0;
+  min-width: 28px;
+}
+
+.moment-text {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: rgba(255, 244, 236, 0.85);
+  line-height: 1.4;
+}
+
+/* ============================================
+   SLIDE: FINAL ASK
+   ============================================ */
+
+.final-question {
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  max-width: 320px;
+  padding: 12px 0;
+  color: var(--cream);
+}
+
+.final-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 28px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.btn-yes {
+  padding: 18px 32px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #B11226, #E8A0B8);
+  color: var(--cream);
+  font-family: var(--font-main);
+  font-size: 1.3rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s;
+  animation: pulseRose 1.5s ease-in-out infinite;
+}
+
+.btn-yes:active {
+  transform: scale(0.95);
+}
+
+@keyframes pulseRose {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(177, 18, 38, 0.6); transform: scale(1); }
+  50% { box-shadow: 0 0 0 16px rgba(177, 18, 38, 0); transform: scale(1.03); }
+}
+
+.btn-absolutely {
+  padding: 16px 32px;
+  border: 2px solid rgba(232, 160, 184, 0.35);
+  border-radius: 50px;
+  background: transparent;
+  color: var(--cream);
+  font-family: var(--font-main);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-absolutely:active {
+  transform: scale(0.95);
+  background: rgba(232, 160, 184, 0.15);
+}
+
+/* Answered state */
+.answered-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.answered-emoji {
+  font-size: 5rem;
+  animation: heartBeat 1s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.15); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.1); }
+}
+
+.answered-text {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--cream);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+.anim-fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-scale-up {
+  opacity: 0;
+  transform: scale(0.85);
+  animation: scaleUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-slide-in-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: slideInFromLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInFromLeft {
+  to { opacity: 1; transform: translateX(0); }
+}
