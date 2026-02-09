@@ -55,6 +55,9 @@ export default function StoryViewer({ onComplete, onHome, audioRef }) {
     const audio = audioRef.current;
     if (!audio) return;
 
+    // Tell the unlock callback in App.jsx not to pause — we're taking over
+    audio.__unlocking = false;
+
     const songPath = SLIDES[currentSlide].config.song;
     if (songPath) {
       audio.src = songPath;

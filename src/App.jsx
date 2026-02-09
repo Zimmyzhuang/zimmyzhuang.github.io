@@ -11,24 +11,25 @@ export default function App() {
 
   const handleStart = useCallback(() => {
     // Unlock audio on user gesture — required by mobile browsers.
-    // We must wait for the unlock to finish before transitioning,
-    // otherwise the .then() callback will pause the first slide's song.
+    // We set a flag so the unlock callback knows not to pause audio
+    // if StoryViewer has already started playing the first song.
     const audio = audioRef.current;
     if (audio) {
       audio.muted = true;
+      audio.__unlocking = true;
       audio.play()
         .then(() => {
-          audio.pause();
+          // Only pause if StoryViewer hasn't already taken over
+          if (audio.__unlocking) {
+            audio.pause();
+            audio.currentTime = 0;
+          }
           audio.muted = false;
-          audio.currentTime = 0;
         })
         .catch(() => {})
-        .finally(() => {
-          setScreen("story");
-        });
-    } else {
-      setScreen("story");
+        .finally(() => { audio.__unlocking = false; });
     }
+    setScreen("story");
   }, []);
 
   const handleComplete = useCallback(() => {
