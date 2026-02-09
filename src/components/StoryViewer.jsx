@@ -7,30 +7,33 @@ import SlideLocation from "./slides/SlideLocation";
 import SlideArtist from "./slides/SlideArtist";
 import SlideAura from "./slides/SlideAura";
 import SlideMoments from "./slides/SlideMoments";
-import SlideFinalAsk from "./slides/SlideFinalAsk";
+import SlidePuzzle from "./slides/SlidePuzzle";
 import "./StoryViewer.css";
 
-const SLIDE_COMPONENTS = [
-  SlideIntro,
-  SlideTime,
-  SlideLocation,
-  SlideArtist,
-  SlideAura,
-  SlideMoments,
-  SlideFinalAsk,
+// Each entry pairs a component with its config (which holds song + duration)
+const SLIDES = [
+  { Component: SlideIntro,    config: CONFIG.slides.intro },
+  { Component: SlideTime,     config: CONFIG.slides.timeSpent },
+  { Component: SlideLocation, config: CONFIG.slides.topLocation },
+  { Component: SlideArtist,   config: CONFIG.slides.topArtist },
+  { Component: SlideAura,     config: CONFIG.slides.aura },
+  { Component: SlideMoments,  config: CONFIG.slides.topMoments },
+  { Component: SlidePuzzle,   config: CONFIG.slides.puzzle },
 ];
 
-const TOTAL_SLIDES = SLIDE_COMPONENTS.length;
+const TOTAL_SLIDES = SLIDES.length;
 const SWIPE_THRESHOLD = 50;
 
-export default function StoryViewer({ onComplete }) {
+export default function StoryViewer({ onComplete, onHome }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState("forward");
   const [slideKey, setSlideKey] = useState(0);
+  const [muted, setMuted] = useState(false);
 
   // Refs so navigation helpers always read the latest slide
   const currentSlideRef = useRef(0);
   const timerRef = useRef(null);
+  const audioRef = useRef(null);
 
   // Pointer tracking for swipe
   const pointerStartRef = useRef({ x: 0, y: 0, time: 0 });
@@ -42,7 +45,45 @@ export default function StoryViewer({ onComplete }) {
     currentSlideRef.current = currentSlide;
   }, [currentSlide]);
 
+  // Current slide's config
+  const slideConfig = SLIDES[currentSlide].config;
+  const slideDuration = slideConfig.duration || 0;
   const isFinalSlide = currentSlide === TOTAL_SLIDES - 1;
+
+  // ---- Per-slide audio ----
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const songPath = SLIDES[currentSlide].config.song;
+    if (songPath) {
+      audio.src = songPath;
+      audio.currentTime = 0;
+      audio.volume = CONFIG.volume;
+      audio.play().catch(() => {
+        // Autoplay blocked — that's ok
+      });
+    } else {
+      audio.pause();
+      audio.removeAttribute("src");
+    }
+
+    return () => {
+      audio.pause();
+    };
+  }, [currentSlide, slideKey]);
+
+  // Keep audio muted state in sync when toggling mid-song
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.muted = muted;
+    }
+  }, [muted]);
+
+  const toggleMute = useCallback((e) => {
+    e.stopPropagation();
+    setMuted((m) => !m);
+  }, []);
 
   // ---- Navigation helpers ----
   const clearTimer = useCallback(() => {
@@ -75,14 +116,15 @@ export default function StoryViewer({ onComplete }) {
     navigate(index);
   }, [navigate]);
 
-  // ---- Auto-advance timer ----
+  // ---- Auto-advance timer (uses per-slide duration) ----
   // Resets when slide changes OR when the same slide is replayed (slideKey changes)
   useEffect(() => {
     clearTimer();
-    if (currentSlide === TOTAL_SLIDES - 1) return; // Don't auto-advance final slide
+    const duration = SLIDES[currentSlideRef.current].config.duration || 0;
+    if (duration <= 0) return; // Don't auto-advance if no duration (e.g. puzzle)
     timerRef.current = setTimeout(() => {
       goForward();
-    }, CONFIG.autoAdvanceMs);
+    }, duration);
     return clearTimer;
   }, [currentSlide, slideKey, clearTimer, goForward]);
 
@@ -97,9 +139,12 @@ export default function StoryViewer({ onComplete }) {
     return { x: e.clientX, y: e.clientY };
   };
 
-  // Check if an event target is inside the progress bar or a button
+  // Check if an event target is inside the progress bar, a button, the puzzle, or vinyl
   const isBarOrButton = (e) =>
-    e.target.closest(".progress-bar") || e.target.closest("button");
+    e.target.closest(".progress-bar") ||
+    e.target.closest("button") ||
+    e.target.closest(".puzzle-container") ||
+    e.target.closest(".vinyl-wrapper");
 
   const handlePointerDown = useCallback((e) => {
     if (isBarOrButton(e)) return;
@@ -137,14 +182,14 @@ export default function StoryViewer({ onComplete }) {
     if (isBarOrButton(e)) return;
 
     const x = e.clientX || 0;
-    if (x < window.innerWidth * 0.3) {
+    if (x < window.innerWidth * 0.5) {
       goBack();
     } else {
       goForward();
     }
   }, [goForward, goBack]);
 
-  const CurrentSlideComponent = SLIDE_COMPONENTS[currentSlide];
+  const CurrentSlideComponent = SLIDES[currentSlide].Component;
 
   return (
     <div
@@ -155,10 +200,13 @@ export default function StoryViewer({ onComplete }) {
       onTouchStart={handlePointerDown}
       onTouchEnd={handlePointerUp}
     >
+      {/* Hidden audio element for per-slide songs */}
+      <audio ref={audioRef} preload="auto" />
+
       <ProgressBar
         total={TOTAL_SLIDES}
         current={currentSlide}
-        duration={isFinalSlide ? 0 : CONFIG.autoAdvanceMs}
+        duration={slideDuration}
         animKey={slideKey}
         onSegmentClick={goToSlide}
       />
@@ -166,6 +214,31 @@ export default function StoryViewer({ onComplete }) {
       <div className={`slide-container slide-${direction}`} key={slideKey}>
         <CurrentSlideComponent onComplete={onComplete} />
       </div>
+
+      <button className="home-btn" onClick={(e) => { e.stopPropagation(); onHome?.(); }} aria-label="Go to start">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 12l9-9 9 9" />
+          <path d="M5 10v10a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1V10" />
+        </svg>
+      </button>
+
+      <button className="mute-btn" onClick={toggleMute} aria-label={muted ? "Unmute" : "Mute"}>
+        {muted ? (
+          /* Speaker off icon */
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" />
+            <line x1="23" y1="9" x2="17" y2="15" />
+            <line x1="17" y1="9" x2="23" y2="15" />
+          </svg>
+        ) : (
+          /* Speaker on icon */
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" />
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+          </svg>
+        )}
+      </button>
     </div>
   );
 }

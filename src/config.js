@@ -14,8 +14,7 @@
 
 // ── GENERAL ─────────────────────────────────
 const name       = "Babe";
-const songPath   = "/assets/song.mp3";
-const autoAdvanceMs = 6000;   // ms per slide (final slide never auto-advances)
+const volume     = 0.5;       // master volume 0.0 (silent) → 1.0 (full)
 
 
 // ── SLIDE 1 · INTRO ────────────────────────
@@ -23,7 +22,9 @@ const intro = {
   greeting:  "Hello",
   subtitle:  "It's been quite a year.",
   cta:       "Let's look at the stats.",
-  photo:     "/assets/intro.jpg",
+  photo:     "/assets/us.jpg",
+  song:      "/songs/our_song_14.mp3",
+  duration:  14000,   // 14 seconds
 };
 
 
@@ -33,6 +34,8 @@ const timeSpent = {
   label:    "minutes spent together",
   subtext:  "(give or take a few... thousand)",
   photo:    "/assets/time.jpg",
+  song:      "/songs/special_someone_27.mp3",
+  duration:  27000,   // 27 seconds
 };
 
 
@@ -42,6 +45,8 @@ const topLocation = {
   subtitle:  "You spent the most time at:",
   footnote:  "No complaints here.",
   photo:     "/assets/location.jpg",
+  song:      "/songs/childhood_28.mp3",
+  duration:  28000,   // 28 seconds
 };
 
 
@@ -51,17 +56,21 @@ const topArtist = {
   artist:    "Me, obviously.",
   streams:   "Streamed 24/7, 365 days",
   subtitle:  "Some things never get old.",
-  photo:     "/assets/artist.jpg",
+  photo:     "/assets/me.jpg",
+  song:      "/songs/thats_what_I_like_29.mp3",
+  duration:  29000,   // 29 seconds
 };
 
 
 // ── SLIDE 5 · AURA ─────────────────────────
 const aura = {
-  title:        "Your Relationship Aura",
-  aura:         "Chaotic Cozy",
-  description:  "A rare blend of unhinged energy and maximum comfort.",
+  title:        "Our Relationship Aura",
+  aura:         "掌心的温热",
+  description:  "An intimate, reassuring love that makes you feel cherished and safe.",
   colors:       ["#B11226", "#E8A0B8", "#8B1E3F", "#E6C46A"],
-  photo:        "/assets/aura.jpg",
+  photo:        "/assets/her.jpg",
+  song:      "/songs/love_32.mp3",
+  duration:  32000,   // 32 seconds
 };
 
 
@@ -69,13 +78,26 @@ const aura = {
 const topMoments = {
   title: "Top 5 Moments",
   moments: [
-    "That time we stayed up until 4am talking about nothing",
-    "Our first road trip and the wrong GPS turn",
-    "When you stole my hoodie (and never gave it back)",
-    "The fancy dinner where we laughed too loud",
-    "Every single time you fell asleep on my shoulder",
+    "When we went to the Getty Museum",
+    "San Fran with everyone (even though we had a huge fight)",
+    "All the times I went to your house and we cooked together",
+    "Eating out at Random Restaurants",
+    "\"Studying\" at my house",
   ],
-  photo: "/assets/moments.jpg",
+  photo: "/assets/shadow.jpg",
+  song:      "/songs/I_love_you_64.mp3",
+  duration:  64000,   // 64 seconds
+};
+
+
+// ── PUZZLE ──────────────────────────────────
+const puzzle = {
+  title:      "Piece it together",
+  hint:       "Drag tiles to swap them",
+  solvedText: "Perfect 💕",
+  photo:      "/assets/StudioGhibili.jpg",
+  song:      null,       // no song for puzzle
+  duration:  0,          // no auto-advance
 };
 
 
@@ -85,7 +107,7 @@ const finalAsk = {
   question:     "Will you go out with me?",
   buttonA:      "Yes",
   buttonB:      "Absolutely",
-  photo:        "/assets/final.jpg",
+  photo:        "/assets/StudioGhibili.jpg",
 };
 
 
@@ -94,7 +116,7 @@ const thankYou = {
   title:     "I knew you'd say yes.",
   subtitle:  "Can't wait.",
   emoji:     "💖",
-  photo:     "/assets/thankyou.jpg",
+  photo:     "/assets/unidog.jpg",
 };
 
 
@@ -103,8 +125,7 @@ const thankYou = {
 // ============================================
 const CONFIG = {
   name,
-  songPath,
-  autoAdvanceMs,
+  volume,
   slides: {
     intro,
     timeSpent,
@@ -112,6 +133,7 @@ const CONFIG = {
     topArtist,
     aura,
     topMoments,
+    puzzle,
     finalAsk,
     thankYou,
   },

@@ -5,27 +5,30 @@
 .photo-frame {
   position: relative;
   overflow: hidden;
-  flex-shrink: 0;
+  flex-shrink: 1;
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.4),
     0 0 0 1px rgba(232, 160, 184, 0.15);
   transform: rotate(var(--rotate, 0deg));
 }
 
-/* Sizes */
+/* Sizes — use max dimensions so they scale down on small screens */
 .photo-frame--small {
   width: 220px;
-  height: 200px;
+  max-width: 55vw;
+  aspect-ratio: 11 / 10;
 }
 
 .photo-frame--medium {
   width: 280px;
-  height: 260px;
+  max-width: 65vw;
+  aspect-ratio: 14 / 13;
 }
 
 .photo-frame--large {
   width: 320px;
-  height: 340px;
+  max-width: 75vw;
+  aspect-ratio: 16 / 17;
 }
 
 /* Shapes */

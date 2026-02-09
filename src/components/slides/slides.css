@@ -129,8 +129,123 @@
 }
 
 /* ============================================
-   SLIDE: TIME SPENT
+   SLIDE: TIME SPENT — Vinyl Record
    ============================================ */
+
+.vinyl-wrapper {
+  flex-shrink: 0;
+  cursor: grab;
+  touch-action: none;       /* prevent scroll while dragging */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.vinyl-wrapper:active {
+  cursor: grabbing;
+}
+
+.vinyl-disk {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #1a1a1a 0%,
+    #111 20%,
+    #1a1a1a 21%,
+    #0d0d0d 40%,
+    #1a1a1a 41%,
+    #111 60%,
+    #1a1a1a 61%,
+    #0d0d0d 80%,
+    #1a1a1a 81%,
+    #222 100%
+  );
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    inset 0 0 30px rgba(0, 0, 0, 0.4);
+  /* rotation is now driven by JS */
+}
+
+.vinyl-grooves {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(
+      circle at center,
+      transparent 0px,
+      transparent 3px,
+      rgba(255, 255, 255, 0.03) 3px,
+      rgba(255, 255, 255, 0.03) 4px
+    );
+  pointer-events: none;
+}
+
+/* Shiny light reflection across the vinyl */
+.vinyl-disk::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    transparent 40%,
+    transparent 60%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  pointer-events: none;
+}
+
+/* Center label area */
+.vinyl-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 104px;
+  height: 104px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #8B1E3F, #B11226);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+  /* counter-rotation is now driven by JS */
+}
+
+.vinyl-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.vinyl-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Tiny spindle hole in the very center */
+.vinyl-spindle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #0a0a0a;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+
+/* vinylSpin / vinylCounterSpin — now driven by JS for drag interaction */
 
 .big-stat {
   font-size: 3.5rem;
