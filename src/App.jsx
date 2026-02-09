@@ -10,17 +10,25 @@ export default function App() {
   const audioRef = useRef(null);
 
   const handleStart = useCallback(() => {
-    // Unlock audio on user gesture — required by mobile browsers
+    // Unlock audio on user gesture — required by mobile browsers.
+    // We must wait for the unlock to finish before transitioning,
+    // otherwise the .then() callback will pause the first slide's song.
     const audio = audioRef.current;
     if (audio) {
       audio.muted = true;
-      audio.play().then(() => {
-        audio.pause();
-        audio.muted = false;
-        audio.currentTime = 0;
-      }).catch(() => {});
+      audio.play()
+        .then(() => {
+          audio.pause();
+          audio.muted = false;
+          audio.currentTime = 0;
+        })
+        .catch(() => {})
+        .finally(() => {
+          setScreen("story");
+        });
+    } else {
+      setScreen("story");
     }
-    setScreen("story");
   }, []);
 
   const handleComplete = useCallback(() => {
